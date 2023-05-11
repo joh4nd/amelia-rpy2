@@ -1,4 +1,4 @@
-# Handling missing data with Amelia in python - _can Python find Amelia?_
+# Handling missing data with Amelia in python
 
 
 Data carpentry/engineering is decisive in determining the [accuracy and confidence](http://www.science.smith.edu/~nhorton/muchado.pdf) of ML, AI, and statitical models as extracted data contains missing values. Unlike human beings, data has a tendency to "go missing". Garbage data into models means garbage predictions out of models. Missing data values are best handled with _multiple imputation_. Helping that since 2001 some kind folks at Harvard have offered the software [Amelia](https://github.com/IQSS/amelia):
