@@ -22,7 +22,7 @@ rpy2 must be able to locate Amelia to run.[<sup>2</sup>](https://stackoverflow.c
 #### _Debian_
 - Packages installed from within R take precedence over apt.[<sup>6</sup>](https://cran.r-project.org/bin/linux/debian/#admihttps://cran.r-project.org/bin/linux/debian/#administration-and-maintenancenistration-and-maintenance)
 - Python packages installed via apt take precedence over pip, because pip will know packages available at pipy are installed in _/usr/lib/python?/dist-package_. apt installs python packages in dist-package seperate from site-package.[<sup>7</sup>](https://wiki.debian.org/Python#Deviations_from_upstream) When pip is itself an apt installed dist-package it also installs packages from pipy as dist-packages, however, at _local/lib_.
-- pip running from an virtual environment "venv" initiated by `virtualenv` locates packages in _./venv/lib/python?/site-package_.
+- pip running from an virtual environment "venv" initiated by `virtualenv` locates packages in _./venv/lib/python?/site-package_. When rpy2 is installed here, it initializes R engines in the R default environment/Library.
 
 
 
@@ -33,7 +33,7 @@ rpy2 must be able to locate Amelia to run.[<sup>2</sup>](https://stackoverflow.c
 
 # install R and RStudio https://cran.r-project.org/bin/linux/debian/
 $ sudo apt install r-base r-base-dev
-$ apt list r-base # version 4.0.4-1
+$ apt list r-base # R version
 
 # check R environment variable to Library
 $ cat /etc/R/Renviron | grep LIB
@@ -54,10 +54,19 @@ $ R
 > pacman::p_install("Amelia")
 
 # check Library directories
-> .libPaths() # https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/libPaths
+> libPaths() # https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/libPaths
 > pacman::p_path() # https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_path
 > pacman::p_path(package = "Amelia")
 
+
+# python
+$ python3
+
+>>> import rpy2.robjects.packages as rpacks  # requires rpy2 is installed as described below
+>>> rutils = rpacks.importr('utils')
+>>> utils.chooseCRANmirror(ind=1)
+>>> from rpy2.robjects.vectors import rStrVector
+>>> rutils.install_packages(rStrVector('Amelia'))
 ```
 
 <p style="text-align: center;">2. <b>python</b>: What directory is rpy2 set to enable?</p>
@@ -86,8 +95,8 @@ $ python3
 # test rpy2 https://rpy2.github.io/doc/latest/html/introduction.html
 >>> import rpy2
 >>> from rpy2.robjects.packages import importr
->>> print(rpy2.robjects.r) # R version 4.0.4 ~
->>> print(rpy2.__version__) # rpy2 version 3.4.2
+>>> print(rpy2.robjects.r) # R version
+>>> print(rpy2.__version__) # rpy2 version
 >>> print(rpy2.situation) # R environment
 >>> for row in rpy2.situation.iter_info():  # inspect R environment
 ...     print(row)
@@ -107,15 +116,15 @@ $ pip install virtualenv
 $ cd # to desired directory of virtual environment
 $ virtualenv venv
 $ source ./venv/bin/activate
-$ pip install 'rpy2==3.4.2' # same version as default env
+$ pip install rpy2==3.4.2 # Debian bullseye version
 $ pip show rpy2 # ./venv/lib/python3.9/site-packages
 
-# test rpy2 https://rpy2.github.io/doc/latest/html/introduction.html
+# test rpy2
 $ python3
 >>> import rpy2
 >>> from rpy2.robjects.packages import importr
->>> print(rpy2.robjects.r) # R version 4.0.4
->>> print(rpy2.__version__) # rpy2 version 3.5.11
+>>> print(rpy2.robjects.r) # R version
+>>> print(rpy2.__version__) # rpy2 version
 >>> print(rpy2.situation) # R environment
 >>> for row in rpy2.situation.iter_info():  # inspect R environment
 ...     print(row)
@@ -124,8 +133,6 @@ $ python3
 # check R Library directories in python
 >>> base = importr('base')
 >>> print(base._libPaths())
->>> print(base._Library)
->>> print(base._Library_site)
 
 ```
 
@@ -135,18 +142,36 @@ $ python3
 
 # import
 import rpy2
+
+from rpy2.robjects.packages import importr # https://rpy2.github.io/doc/v2.9.x/html/robjects_rpackages.html
+from rpy2.robjects import packages as rpacks
+
+from rpy2.robjects import r # to run R as str input
+
 import pandas as pd
-from rpy2.robjects.packages import importr
-from rpy2.robjects import r
 from rpy2.robjects import pandas2ri # requires pandas
 
-r_utils = importr('utils')
-r_help = r_utils.help('help') # help within utils
-str(r_help)
-r_help_where = r_utils.help_search('help') # search help within utils
 
-# run
+# import Amelia
 Amelia = importr('Amelia')
+
+
+# get R help
+Amelia
+# r_help = r_utils.help('help') # help within utils
+# str(r_help)
+# r_help_where = r_utils.help_search('help') # search help within utils
+
+
+
+
+
+
+
+
+
+
+
 dir(Amelia)
 Amelia.
 
