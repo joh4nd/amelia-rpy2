@@ -7,21 +7,21 @@ Data carpentry/engineering is decisive in determining the [accuracy and confiden
 
 `Amelia` has its home in `R` as the typical language for applied [statistical science](https://stats.stackexchange.com/q/6/207649). The language for machine learning, especially in business, is often `python` (think about TensorFlow, SciPy, Scikit-learn, and PyTorch). Rather than being lost in translation, python machine learners can use [rpy2](https://github.com/rpy2/rpy2). `rpy2` may require a bit of attention to be setup for python to be able to catch Amelia.
 
-###### There is modest support for multiple imputation in python: `sklearn`'s [InterativeImputer](https://scikit-learn.org/stable/modules/generated/sklearn.impute.IterativeImputer.html) "is still experimental". The [Python Data Science Handbook](https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.04-Missing-Values.ipynb) leans mostly on NumPy and Pandas. Ongoing projects like [impyute](https://github.com/eltonlaw/impyute), [pypots](https://github.com/WenjieDu/PyPOTS), and [ycimpute](https://github.com/OpenIDEA-YunanUniversity/ycimpute) could benefit from documenting the advanced features that enable valid and reliable predictions. [`mipy`](https://github.com/bcb/mipy) v.0.0.1 was last maintained in 2016.
+<small><small><small>There is modest support for multiple imputation in python: `sklearn`'s [InterativeImputer](https://scikit-learn.org/stable/modules/generated/sklearn.impute.IterativeImputer.html) "is still experimental". The [Python Data Science Handbook](https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.04-Missing-Values.ipynb) leans mostly on NumPy and Pandas. Ongoing projects like [impyute](https://github.com/eltonlaw/impyute), [pypots](https://github.com/WenjieDu/PyPOTS), and [ycimpute](https://github.com/OpenIDEA-YunanUniversity/ycimpute) could benefit from documenting the advanced features that enable valid and reliable predictions. [`mipy`](https://github.com/bcb/mipy) v.0.0.1 was last maintained in 2016.</small></small></small>
 
 ## Installation
 
-rpy2 must be able to locate Amelia to run.[<sup>1</sup>](https://stackoverflow.com/a/47003754/3755989) What directory is rpy2 set to enable? What R Library contains Amelia? A few things determine these settings:
+rpy2 must be able to locate Amelia to run.[<sup>2</sup>](https://stackoverflow.com/a/47003754/3755989) What directory is rpy2 set to enable? What R Library contains Amelia? A few things determine these settings:
 
-- R uses `install.packages()` to manage the [Library](https://www.r-bloggers.com/2020/10/customizing-your-package-library-location/), but users may prefer `pacman`, which also manages dependencies.[<sup>2</sup>](https://rdocumentation.org/packages/pacman/versions/0.5.1)
+- R uses `install.packages()` to manage the [Library](https://www.r-bloggers.com/2020/10/customizing-your-package-library-location/), but users may prefer `pacman`, which also manages dependencies.[<sup>3</sup>](https://rdocumentation.org/packages/pacman/versions/0.5.1)
 
-- Python packages and project environments are often managed by `pip`, `conda`, [virtualenv](https://pypi.org/project/virtualenv/), or containers like [Docker](https://github.com/rpy2/rpy2-docker).[<sup>3,</sup>](https://packaging.python.org/en/latest/guides/tool-recommendations/)[<sup>4</sup>](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)
+- Python packages and project environments are often managed by `pip`, `conda`, [virtualenv](https://pypi.org/project/virtualenv/), or containers like [Docker](https://github.com/rpy2/rpy2-docker).[<sup>4,</sup>](https://packaging.python.org/en/latest/guides/tool-recommendations/)[<sup>5</sup>](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)
 
 - Operating Systems orgainze software like R, RStudio, and python differently. Linux distributions use different software managers such as `apt`, and Windows users may implement [scoop](https://scoop.sh/) or [SDKMAN](https://sdkman.io/).
 
 #### _Debian_
-- Packages installed from within R take precedence over apt.[<sup>5</sup>](https://cran.r-project.org/bin/linux/debian/#admihttps://cran.r-project.org/bin/linux/debian/#administration-and-maintenancenistration-and-maintenance)
-- Python packages installed via apt take precedence over pip, because pip will know packages available at pipy are installed in _/usr/lib/python?/dist-package_. apt installs python packages in dist-package seperate from site-package.[<sup>6</sup>](https://wiki.debian.org/Python#Deviations_from_upstream) When pip is itself an apt installed dist-package it also installs packages from pipy as dist-packages, however, at _local/lib_.
+- Packages installed from within R take precedence over apt.[<sup>6</sup>](https://cran.r-project.org/bin/linux/debian/#admihttps://cran.r-project.org/bin/linux/debian/#administration-and-maintenancenistration-and-maintenance)
+- Python packages installed via apt take precedence over pip, because pip will know packages available at pipy are installed in _/usr/lib/python?/dist-package_. apt installs python packages in dist-package seperate from site-package.[<sup>7</sup>](https://wiki.debian.org/Python#Deviations_from_upstream) When pip is itself an apt installed dist-package it also installs packages from pipy as dist-packages, however, at _local/lib_.
 - pip running from an virtual environment "venv" initiated by `virtualenv` locates packages in _./venv/lib/python?/site-package_.
 
 
